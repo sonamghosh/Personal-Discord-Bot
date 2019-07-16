@@ -33,6 +33,29 @@ client.on('message', msg => {
 	}
 });
 
+// Testing for Welcome Msg when user gets added
+client.on('guildMemberAdd', member => {
+	client.on('message',
+		var role = member.guild.roles.find('name', 'Beginner role Name');
+		member.addRole(role);
+
+		member.guild.channels.get('JOIN/LEAVE Channel ID').send({embed: {
+			color: 3447003,
+			title: "**SERVER NAME** Welcome OwO!",
+			url: "WEBSITE URL",
+			description: "Welcome *"+ member + "* to the **Server name** discord server!",
+			fields: : [{
+				name: "Information",
+				value: "Server info"
+			}],
+			timestamp: new Date(),
+			footer = {
+				icon_url: client.user.avatarURL,
+				text: "uwu 2019 - 2020"
+			}
+		}}); });
+
+
 
 //client.login(auth.token);
 client.login(process.env.BOT_TOKEN);
