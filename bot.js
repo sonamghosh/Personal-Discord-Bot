@@ -153,7 +153,8 @@ function listEvents(auth) {
 
 async function ListEvents(messageObj, auth) {
 	try {
-		return await listEvents(auth)
+		let result = await listEvents(auth);
+		return result
 	} catch(e) {
 		return e;
 	}
