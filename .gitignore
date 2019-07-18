@@ -96,4 +96,8 @@ typings/
 # Auth Json file
 auth.json
 
+# Google APIs Token
+token.json
+credentials.json
+
 # End of https://www.gitignore.io/api/node
