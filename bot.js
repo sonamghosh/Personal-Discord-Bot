@@ -54,7 +54,7 @@ client.on('message', msg => {
 
 	// Testing new evemt
 	else if (msg.content == '!list-events') {
-		let events = await ListEvents(message, process.env.access_token)
+		let events = await ListEvents(msg, process.env.access_token)
 		message.channel.send(events);
 	}
 });
@@ -151,7 +151,7 @@ function listEvents(auth) {
 }
 
 
-function ListEvents(messageObj, auth) {
+async function ListEvents(messageObj, auth) {
 	try {
 		let result = await listEvents(auth);
 		return result
