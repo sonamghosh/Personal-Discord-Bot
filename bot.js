@@ -167,8 +167,7 @@ async function ListEvents(messageObj, auth) {
 			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
 	oAuth2Client.setCredentials(JSON.parse(auth));
 	try {
-		let result = await listEvents(oAuth2Client);
-		return result
+		return await listEvents(oAuth2Client);
 	} catch(e) {
 		return e;
 	}
