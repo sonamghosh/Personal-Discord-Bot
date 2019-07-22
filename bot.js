@@ -137,7 +137,7 @@ function listEvents(auth) {
 	const calendar = google.calendar({version: 'v3', auth});
 	return new Promise((resolve, reject) => {
 		calendar.events.list({
-			calendarId,
+			calendarId: 'primary',
 			timeMin: (new Date()).toISOString(),
 			maxResults: 10,
 			singleEvents: true,
@@ -162,10 +162,11 @@ function listEvents(auth) {
 
 
 async function ListEvents(messageObj, auth) {
-	try {
-		const oAuth2Client = new google.auth.OAuth2(
+	messageObj.channel.send('Listing details...');
+	const oAuth2Client = new google.auth.OAuth2(
 			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
-		oAuth2Client.setCredentials(JSON.parse(auth));
+	oAuth2Client.setCredentials(JSON.parse(auth));
+	try {
 		let result = await listEvents(oAuth2Client);
 		return result
 	} catch(e) {
