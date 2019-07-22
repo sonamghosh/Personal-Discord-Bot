@@ -65,7 +65,7 @@ client.on('message', async msg => {
 	// Testing new evemt
 	else if (msg.content == '!list-events') {
 		let events = await ListEvents(msg, auth_tokens)
-		message.channel.send(events);
+		msg.channel.send(events);
 	}
 });
 
