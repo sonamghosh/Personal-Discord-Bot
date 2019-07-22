@@ -165,7 +165,7 @@ async function ListEvents(messageObj, auth) {
 	messageObj.channel.send('Listing details...');
 	const oAuth2Client = new google.auth.OAuth2(
 			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
-	oAuth2Client.setCredentials(JSON.parse(auth));
+	oAuth2Client.setCredentials(auth);
 	try {
 		return await listEvents(oAuth2Client);
 	} catch(e) {
