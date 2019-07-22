@@ -14,6 +14,16 @@ const {credentials, calendarId} = require('keys.js')
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const TOKEN_PATH = 'token.json'
 
+
+const auth_tokens = {
+	"access_token": process.env.access_token,
+	"refresh_token": process.env.refresh_token,
+	"scope": process.env.scope,
+	"token_type": process.env.token_type,
+	"expiry_date": process.env.expiry_date
+}
+
+
 const responseObject = {
 	"boop": "UwU",
 	"rino": "rino rino",
@@ -54,7 +64,7 @@ client.on('message', msg => {
 
 	// Testing new evemt
 	else if (msg.content == '!list-events') {
-		let events = await ListEvents(msg, process.env.access_token)
+		let events = await ListEvents(msg, auth_tokens)
 		message.channel.send(events);
 	}
 });
@@ -153,7 +163,8 @@ function listEvents(auth) {
 
 async function ListEvents(messageObj, auth) {
 	try {
-		let result = listEvents(auth);
+		oAuth2Client.setCredentials(auth);
+		let result = listEvents(oAuth2Client);
 		return result
 	} catch(e) {
 		return e;
