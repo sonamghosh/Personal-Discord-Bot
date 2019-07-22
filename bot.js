@@ -163,7 +163,9 @@ function listEvents(auth) {
 
 async function ListEvents(messageObj, auth) {
 	try {
-		oAuth2Client.setCredentials(auth);
+		const oAuth2Client = new google.auth.OAuth2(
+			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
+		oAuth2Client.setCredentials(JSON.parse(auth));
 		let result = listEvents(oAuth2Client);
 		return await result
 	} catch(e) {
