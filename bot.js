@@ -35,7 +35,7 @@ client.on('ready', () => {
 });
 
 
-client.on('message', msg => {
+client.on('message', async msg => {
 
 	if (msg.content.toLowerCase() == 'boop') {
 		msg.reply('UwU!');
@@ -165,7 +165,7 @@ async function ListEvents(messageObj, auth) {
 	try {
 		oAuth2Client.setCredentials(auth);
 		let result = listEvents(oAuth2Client);
-		return result
+		return await result
 	} catch(e) {
 		return e;
 	}
