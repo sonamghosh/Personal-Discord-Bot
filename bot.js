@@ -9,7 +9,7 @@ const fs = require('fs');
 const readline = require('readline');
 const google = require('googleapis');
 const googleAuth = require('google-auth-library');
-const {credentials, calendarId} = require('keys.js')
+const {credentials, calendarId} = require('./keys.js')
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const TOKEN_PATH = 'token.json'
@@ -166,24 +166,12 @@ async function ListEvents(messageObj, auth) {
 		const oAuth2Client = new google.auth.OAuth2(
 			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
 		oAuth2Client.setCredentials(JSON.parse(auth));
-		let result = listEvents(oAuth2Client);
-		return await result
+		let result = await listEvents(oAuth2Client);
+		return result
 	} catch(e) {
 		return e;
 	}
 }
-
-
-module.exports = {
-	authorize,
-	credentials,
-	listEvents,
-	getAccessToken
-}
-
-
-
-
 
 
 
