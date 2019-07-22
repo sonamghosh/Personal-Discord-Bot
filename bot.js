@@ -149,7 +149,7 @@ function listEvents(auth) {
 				let eventString = 'Upcoming 10 events: \n'
 				events.map((event, i) => {
 					const start = event.start.dateTime || event.start.date;
-					eventString += '\n${i+1}. ${event.summary} - ${start}.          (id: $(event.id})'
+					eventString += `\n${i+1}. ${event.summary} - ${start}          (id: $(event.id})`
 				});
 			resolve(eventString)
 			}
