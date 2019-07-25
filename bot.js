@@ -191,7 +191,7 @@ function createEvent(auth, event) {
 	const calendar = google.calendar({version: 'v3', auth});
 	return new Promise((resolve, reject) => {
 		calendar.events.insert({
-			//auth: auth,
+			auth: auth,
 			calendarId: 'primary',
 			resource: event,
 
@@ -222,7 +222,7 @@ async function CreateEvent(event, messageObj, auth) {
 }
 
 
-async function initCreateEvent(contents, messageObj) {
+async function initCreateEvent(contents, messageObj, auth) {
 	eventObj = {
 		date: "",
 		time: "",
