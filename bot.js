@@ -10,7 +10,7 @@ const readline = require('readline');
 const {google} = require('googleapis');
 const googleAuth = require('google-auth-library');
 const {credentials, calendarId} = require('./keys.js')
-
+const convertTime = require('convert-time')
 const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 const TOKEN_PATH = 'token.json'
 
@@ -66,6 +66,17 @@ client.on('message', async msg => {
 	else if (msg.content == '!list-events') {
 		let events = await ListEvents(msg, auth_tokens)
 		msg.channel.send(events);
+	}
+
+	// Testing create event
+	else if (msg.content.startsWith('!create-event')) {
+		let contents = msg.content.split(" ");
+		try {
+			var eventLink = await initCreateEvent(contents, msg, auth_tokens)
+		} catch (e) {
+			var eventLink = e;
+		}
+		msg.channel.send(eventLink);
 	}
 });
 
@@ -174,8 +185,96 @@ async function ListEvents(messageObj, auth) {
 }
 
 
+// create Events
+
+function createEvent(auth, event) {
+	const calendar = google.calendar({version: 'v3', auth});
+	return new Promise((resolve, reject) => {
+		calendar.events.insert({
+			auth: auth,
+			calendarId: 'primary',
+			resource: event,
+
+		}, function(err, newEvent) {
+			if (err) {
+				reject(`There was an error with the calendar service: ${err}`)
+			}
+			resolve(`Event created: ${newEvent.data.htmlLink}`);
+		});
+	})
+}
 
 
+async function CreateEvent(event, messageObj, auth) {
+	/**
+	messageObj.channel.send("Creating event...")
+	const oAuth2Client = new google.auth.OAuth2(
+			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
+	oAuth2Client.setCredentials(auth);
+	*/
+	messageObj.channel.send("Creating event...")
+
+	try {
+		return await createEvent(auth, event)
+	} catch(e) {
+		return e
+	}
+}
+
+
+async function initCreateEvent(contents, messageObj) {
+	eventObj = {
+		date: "",
+		time: "",
+		endtime: "",
+		name: ""
+	}
+
+	contents.forEach(string => {
+		if(string.startsWith("name:")) {
+			eventObj.name = string.substring(5);
+		}
+
+		if(string.startsWith("date:")) {
+			eventObj.date = string.substring(5);
+		}
+
+		if(string.startsWith("time:")) {
+			let timePM = string.substring(5)
+			let timeConverted = convertTime(timePM)
+
+			eventObj.endtime = timeConverted
+		}
+	});
+	let dateSplit = eventObj.date.split('/')
+	let startTimeSplit = eventObj.time.split('/')
+	let endTimeSplit = eventObj.endtime.split('/')
+
+	let startDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0], startTimeSplit[0], startTimeSplit[1])
+	let endDate = new Date(dateSplit[2], dateSplit[1] - 1, dateSplit[0], endTimeSplit[0], endTimeSplit[1])
+
+	let eventDetails = {
+		description: eventObj.name,
+		summary: eventObj.name,
+		start: {
+			dateTime: startDate
+		},
+		end: {
+			dateTime: endDate
+		}
+	}
+
+	const oAuth2Client = new google.auth.OAuth2(
+			process.env.client_id, process.env.client_secret, process.env.redirect_uris1);
+	oAuth2Client.setCredentials(auth);
+
+	try {
+		return await CreateEvent(eventDetails, messageObj, oAuth2Client)
+	} catch (e) {
+		return e
+	}
+
+}
 
 
 
