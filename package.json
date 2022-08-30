@@ -16,7 +16,7 @@
     "googleapis": "^41.0.0",
     "linebyline": "^1.3.0",
     "lowdb": "^1.0.0",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.35",
     "node-emoji-clock": "^0.1.0",
     "request": "2.81.0"
   }
